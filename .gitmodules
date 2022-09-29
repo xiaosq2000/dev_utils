@@ -1,0 +1,3 @@
+[submodule "language_server/ccls"]
+	path = language_server/ccls
+	url = https://github.com/MaskRay/ccls

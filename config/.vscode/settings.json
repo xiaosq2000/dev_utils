@@ -1,0 +1,10 @@
+{
+    "cmake.configureArgs": ["-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"],
+	"cmake.parallelJobs": 0,
+    "ccls.launch.command": "/root/dev_utils/language_server/ccls/Release/ccls",
+    "ccls.misc.compilationDatabaseDirectory": "build",
+    "[cpp]": {
+        "editor.defaultFormatter": "ccls-project.ccls"
+    },
+    "ccls.codeLens.enabled": false
+}
