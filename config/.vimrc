@@ -2,6 +2,7 @@ inoremap jk <ESC>  "把ESC改为jk
 set encoding=utf-8
 set nobackup      
 set noswapfile    
+set expandtab
 set tabstop=4     
 set softtabstop=4 
 set shiftwidth=4  
