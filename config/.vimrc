@@ -1,4 +1,4 @@
-inoremap jk <ESC>  "把ESC改为jk
+inoremap jk <ESC>
 set encoding=utf-8
 set nobackup      
 set noswapfile    
@@ -10,7 +10,6 @@ set autoindent
 syntax on         
 set number        
 set relativenumber
-"set cursorline    
 set showmatch     
 set wrap          
 set autoread      

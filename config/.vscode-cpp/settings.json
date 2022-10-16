@@ -1,0 +1,35 @@
+{
+    "cmake.configureArgs": ["-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"],
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.parallelJobs": 0,
+    "cmake.configureOnOpen": false,
+    "cmake.configureOnEdit": false,
+    "cmake.autoSelectActiveFolder": true,
+    "ccls.launch.command": "/root/dev_utils/language_server/ccls/Release/ccls",
+    "ccls.misc.compilationDatabaseDirectory": "build",
+    "[cpp]": {
+        "editor.defaultFormatter": "ccls-project.ccls"
+    },
+    "ccls.codeLens.enabled": false,
+    "doxdocgen.generic.authorName": "肖书奇",
+    "doxdocgen.file.fileOrder": [
+        "file",
+        "author",
+        "brief",
+        "version",
+        "date",
+        "copyright",
+        "custom"
+    ],
+    "doxdocgen.generic.order": [
+        "brief",
+        "tparam",
+        "param",
+        "return",
+        "custom"
+    ],
+    "doxdocgen.file.copyrightTag": [
+        "@copyright Copyright (c) {2022} 深圳乐动机器人版权所有"
+    ],
+    "doxdocgen.generic.authorEmail": "xiaoshuqi@ldrobot.com"
+}
