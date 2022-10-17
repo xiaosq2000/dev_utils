@@ -1,0 +1,65 @@
+\ProvidesPackage{shuqi-tufte-book}
+% tufte-book's bug fix for xelatex
+\ifxetex
+  \renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
+  \renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
+\fi
+% define subtitle command for tufte-book
+\makeatletter
+\newcommand{\plainsubtitle}{}% plain-text-only subtitle
+\newcommand{\subtitle}[1]{
+  \gdef\@subtitle{#1}
+  \renewcommand{\plainsubtitle}{#1}% use provided plain-text title
+  \ifthenelse{\isundefined{\hypersetup}}
+    {}% hyperref is not loaded; do nothing
+    {\hypersetup{pdftitle={\plaintitle: \plainsubtitle{}}}}% set the PDF metadata title
+}
+\renewcommand{\maketitlepage}[0]{
+  \cleardoublepage
+  {
+  \sffamily
+  \begin{fullwidth}
+  \fontsize{18}{20}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{\thanklessauthor}}
+  \vspace{11.5pc}
+  \fontsize{36}{40}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{\thanklesstitle}}
+  \vspace{5pc}
+  \fontsize{24}{28}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{\plainsubtitle}}
+  \vfill
+  \fontsize{14}{16}\selectfont\par\noindent\allcaps{\thanklesspublisher}
+  \end{fullwidth}
+  }
+  \thispagestyle{empty}
+  \clearpage
+}
+\newcommand{\marginhref}{
+  \begingroup
+  \@makeother\%\@makeother\#
+  \@makemarginhref
+}
+\def\@makemarginhref#1#2{
+  \marginnote{\href{#1}{#2}}
+  \endgroup
+}
+\newcommand{\sidehref}{
+  \begingroup
+  \@makeother\%\@makeother\#
+  \@makesidehref
+}
+\def\@makesidehref#1#2{
+  \sidenote{\href{#1}{#2}}
+  \endgroup
+}
+\makeatother
+
+\usepackage[fontset=shuqi-windows]{ctex}
+% \usepackage[fontset=shuqi-ubuntu]{ctex}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\usepackage[]{minted}

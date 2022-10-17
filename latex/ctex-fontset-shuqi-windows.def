@@ -1,0 +1,80 @@
+\ProvidesExplFile{ctex-fontset-shuqi-windows.def}
+  {\ExplFileDate}{2.5.9}{\ExplFileDescription}
+\file_if_exist:nTF { \c_dollar_str WINDIR/Fonts/msyh.ttc }
+  { \tl_const:Nn \c__ctex_msyh_suffix_tl { ttc } }
+  {
+    \file_if_exist:nTF { msyh.ttc }
+      { \tl_const:Nn \c__ctex_msyh_suffix_tl { ttc } }
+      { \tl_const:Nn \c__ctex_msyh_suffix_tl { ttf } }
+  }
+\ctex_fontset_case:nnn
+  {
+    \ctex_zhmap_case:nnn
+      {
+        \ctex_punct_set:n { windows }
+        \setCJKmainfont { SourceHanSerifCN-Regular.otf }
+          [ BoldFont = SourceHanSerifCN-Bold.otf, ItalicFont = Adobe-Kaiti-Std-R.otf ]
+        \setCJKsansfont { msyh.\c__ctex_msyh_suffix_tl }
+          [ BoldFont = msyhbd.\c__ctex_msyh_suffix_tl ]
+        \setCJKmonofont { SourceHanMono.ttc }
+        \setCJKfamilyfont { zhsong  } { SourceHanSerifCN-Regular.otf  }
+        \setCJKfamilyfont { zhhei   } { SourceHanSansCN-Regular.otf  }
+        \setCJKfamilyfont { zhfs    } { Adobe-Fangsong-Std-R.otf }
+        \setCJKfamilyfont { zhkai   } { Adobe-Kaiti-Std-R.otf  }
+        \setCJKfamilyfont { zhyahei } { msyh.\c__ctex_msyh_suffix_tl }
+          [ BoldFont = msyhbd.\c__ctex_msyh_suffix_tl ]
+        \setCJKfamilyfont { zhli    } { simli.ttf   }
+        \setCJKfamilyfont { zhyou   } { simyou.ttf  }
+        \ctex_punct_map_family:nn   { \CJKrmdefault          } { zhsong   }
+        \ctex_punct_map_bfseries:nn { \CJKrmdefault          } { zhhei    }
+        \ctex_punct_map_itshape:nn  { \CJKrmdefault          } { zhkai    }
+        \ctex_punct_map_family:nn   { \CJKsfdefault          } { zhyahei  }
+        \ctex_punct_map_bfseries:nn { \CJKsfdefault, zhyahei } { zhyaheib }
+        \ctex_punct_map_family:nn   { \CJKttdefault          } { zhfs     }
+      }
+      {
+        \ctex_load_zhmap:nnnn { rm } { zhhei } { zhfs } { windows }
+        \ctex_punct_set:n { windows }
+        \ctex_punct_map_family:nn   { \CJKrmdefault } { zhsong }
+        \ctex_punct_map_bfseries:nn { \CJKrmdefault } { zhhei  }
+        \ctex_punct_map_itshape:nn  { \CJKrmdefault } { zhkai  }
+      }
+      { }
+  }
+  {
+    \ctex_set_upfonts:nnnnnn
+      { SourceHanSerifCN-Regular.otf                   }
+      { SourceHanSerifCN-Bold.otf                   }
+      { Adobe-Kaiti-Std-R.otf                   }
+      { msyh.\c__ctex_msyh_suffix_tl    }
+      { msyhbd.\c__ctex_msyh_suffix_tl  }
+      { Adobe-Fangsong-Std-R.otf                  }
+    \ctex_set_upfamily:nnn { zhsong  } { upzhserif   } {}
+    \ctex_set_upfamily:nnn { zhhei   } { upzhserifb  } {}
+    \ctex_set_upfamily:nnn { zhfs    } { upzhmono    } {}
+    \ctex_set_upfamily:nnn { zhkai   } { upzhserifit } {}
+    \ctex_set_upfamily:nnn { zhyahei } { upzhsans    } { upzhsansb }
+    \ctex_set_upfamily:nnn { zhli    } { upschrm     } {}
+    \ctex_set_upfamily:nnn { zhyou   } { upschgt     } {}
+    \ctex_set_upmap:nnn { upstsl } { simli.ttf  } {}
+    \ctex_set_upmap:nnn { upstht } { simyou.ttf } {}
+  }
+  {
+    \setCJKmainfont { Source~Han~Serif~CN } [ ItalicFont = Adobe~Kaiti~Std~R ]
+    \setCJKsansfont { Source~Han~Sans~CN  }
+    \setCJKmonofont { Source~Han~Mono~SC  }
+    \setCJKfamilyfont { zhsong } { Source~Han~Serif~CN  }
+    \setCJKfamilyfont { zhhei  } { Source~Han~Sans~CN   }
+    \setCJKfamilyfont { zhkai  } { Adobe~Kaiti~Std~R    }
+    \setCJKfamilyfont { zhfs   } { Adobe~Fangsong~Std~R }
+    \setCJKfamilyfont { zhyahei } { Microsoft~YaHei } [ BoldFont = *~Bold ]
+    \setCJKfamilyfont { zhli    } { LiSu            }
+    \setCJKfamilyfont { zhyou   } { YouYuan         }
+  }
+\NewDocumentCommand \songti   { } { \CJKfamily { zhsong  } }
+\NewDocumentCommand \heiti    { } { \CJKfamily { zhhei   } }
+\NewDocumentCommand \fangsong { } { \CJKfamily { zhfs    } }
+\NewDocumentCommand \kaishu   { } { \CJKfamily { zhkai   } }
+\NewDocumentCommand \lishu    { } { \CJKfamily { zhli    } }
+\NewDocumentCommand \youyuan  { } { \CJKfamily { zhyou   } }
+\NewDocumentCommand \yahei    { } { \CJKfamily { zhyahei } }
