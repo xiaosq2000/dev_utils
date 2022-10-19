@@ -1,4 +1,4 @@
-\ProvidesExplFile{ctex-fontset-shuqi.def}
+\ProvidesExplFile{ctex-fontset-shuqi-ubuntu.def}
   {\ExplFileDate}{2.5.8}{\ExplFileDescription}
 \ctex_fontset_case:nnnn
   { \ctex_fontset_error:n { ubuntu } }
@@ -7,16 +7,16 @@
       {
         \setCJKmainfont { SourceHanSerifCN-Regular.otf }
           [ BoldFont = SourceHanSerifCN-Bold.otf, ItalicFont = Adobe-Kaiti-Std-R.otf ]
-        \setCJKsansfont { SourceHanSansCN-Regular.otf  }
-          [ BoldFont = SourceHanSansCN-Bold.otf  ]
+        \setCJKsansfont { SourceHanSansSC-Regular.otf  }
+          [ BoldFont = SourceHanSansSC-Bold.otf  ]
         \setCJKmonofont { SourceHanMono.ttc }
           [ BoldFont = SourceHanMono.ttc ]
         \setCJKfamilyfont { zhsong } { SourceHanSerifCN-Regular.otf }
           [ BoldFont = SourceHanSerifCN-Bold.otf ]
-        \setCJKfamilyfont { zhhei  } { SourceHanSansCN-Regular.otf  }
-          [ BoldFont = SourceHanSansCN-Bold.otf  ]
+        \setCJKfamilyfont { zhhei  } { SourceHanSansSC-Regular.otf  }
+          [ BoldFont = SourceHanSansSC-Bold.otf  ]
         \setCJKfamilyfont { zhkai  } { Adobe-Kaiti-Std-R.otf              }
-        \setCJKfamilyfont { zhfs   } { Adobe-Fangsong-Std-R.otf  }
+        \setCJKfamilyfont { zhfs   } { Adobe-Fangsong-Std-R.ttf  }
         \ctex_punct_set:n { ubuntu }
         \ctex_punct_map_family:nn   { \CJKrmdefault        } { zhsong  }
         \ctex_punct_map_family:nn   { \CJKsfdefault        } { zhhei   }
@@ -40,7 +40,7 @@
     \ctex_set_upmap_unicode:nnn { upserif }
       { SourceHanSerifCN-Regular.otf } { SourceHanSerifCN-Bold.otf }
     \ctex_set_upmap_unicode:nnn { upsans  }
-      { SourceHanSansCN-Regular.otf  } { SourceHanSansCN-Bold.otf  }
+      { SourceHanSansSC-Regular.otf  } { SourceHanSansSC-Bold.otf  }
     \ctex_set_upmap_unicode:nnn { upmono  }
       { SourceHanSerifCN-Regular.otf } { }
     \ctex_set_upmap:nnn { upserifit } { Adobe-Kaiti-Std-R.otf  } { }
@@ -51,10 +51,10 @@
   }
   {
     \setCJKmainfont { Source~Han~Serif~CN } [ ItalicFont = Adobe~Kaiti~Std~R ]
-    \setCJKsansfont { Source~Han~Sans~CN  }
+    \setCJKsansfont { Source~Han~Sans~SC  }
     \setCJKmonofont { Source~Han~Mono~SC  }
     \setCJKfamilyfont { zhsong } { Source~Han~Serif~CN  }
-    \setCJKfamilyfont { zhhei  } { Source~Han~Sans~CN   }
+    \setCJKfamilyfont { zhhei  } { Source~Han~Sans~SC   }
     \setCJKfamilyfont { zhkai  } { Adobe~Kaiti~Std~R    }
     \setCJKfamilyfont { zhfs   } { Adobe~Fangsong~Std~R }
   }
