@@ -21,3 +21,5 @@ let g:molokai_original = 1
 let g:rehash256 = 1
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
+vmap <C-c> y:new ~/.vimbuffer<CR>VGp:x<CR> \| :!cat ~/.vimbuffer \| clip.exe <CR><CR>
+map <C-v> :r ~/.vimbuffer<CR>
