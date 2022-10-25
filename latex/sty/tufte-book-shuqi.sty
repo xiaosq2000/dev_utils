@@ -1,9 +1,16 @@
-\ProvidesPackage{shuqi-tufte-book}
+\ProvidesPackage{tufte-book-shuqi}
 % tufte-book's bug fix for xelatex
 \ifxetex
+  \usepackage{fontspec}
   \renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
   \renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
 \fi
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% original serif and sans typefaces in Tufte's books
+\setmainfont{Bembo Std}
+\setsansfont{Gill Sans}
+\setmonofont{Source Code Pro}
 % define subtitle command for tufte-book
 \makeatletter
 \newcommand{\plainsubtitle}{}% plain-text-only subtitle
@@ -51,15 +58,41 @@
 }
 \makeatother
 
-\usepackage[fontset=shuqi-windows]{ctex}
-% \usepackage[fontset=shuqi-ubuntu]{ctex}
+\usepackage[fontset=shuqi]{ctex}
+
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+
+\usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
+    % linkcolor=blue,
+    % filecolor=magenta,      
+    % urlcolor=cyan,
 }
+
+\definecolor{solarized-light-bgcolor}{rgb}{0.99,0.96,0.89}
 \usepackage[]{minted}
+\usemintedstyle{solarized-light}
+\setminted[bash]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,bgcolor=solarized-light-bgcolor,fontsize=\footnotesize}
+\setminted[PowerShell]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,bgcolor=solarized-light-bgcolor,fontsize=\footnotesize}
+\setminted[yaml]{encoding=utf-8,linenos=true,mathescape=true,autogobble=true,breaklines=true,bgcolor=solarized-light-bgcolor,fontsize=\footnotesize}
+
+% https://stackoverflow.com/questions/59551243/how-to-align-an-enumerated-list-in-latex
+\usepackage{enumitem}
+\usepackage{varwidth}
+\usepackage{tasks}
+
+\usepackage{newfloat}
+\SetupFloatingEnvironment{figure}{chapterlistsgaps=off}
+\SetupFloatingEnvironment{table}{chapterlistsgaps=off}
+\DeclareFloatingEnvironment[name=代码,listname=代码,chapterlistsgaps=off]{tufteListing}
+
+\usepackage[nameinlink]{cleveref}
+\crefname{figure}{图}{图}
+\crefname{table}{表}{表}
+\crefname{tufteListing}{代码}{代码}
+
+\usepackage{booktabs}
+\usepackage{makeidx}
