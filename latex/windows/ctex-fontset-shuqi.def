@@ -1,4 +1,4 @@
-\ProvidesExplFile{ctex-fontset-shuqi-windows.def}
+\ProvidesExplFile{ctex-fontset-shuqi.def}
   {\ExplFileDate}{2.5.9}{\ExplFileDescription}
 \file_if_exist:nTF { \c_dollar_str WINDIR/Fonts/msyh.ttc }
   { \tl_const:Nn \c__ctex_msyh_suffix_tl { ttc } }

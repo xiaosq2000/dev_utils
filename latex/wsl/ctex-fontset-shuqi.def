@@ -1,0 +1,64 @@
+\ProvidesExplFile{ctex-fontset-shuqi.def}
+  {\ExplFileDate}{2.5.8}{\ExplFileDescription}
+\ctex_fontset_case:nnnn
+  { \ctex_fontset_error:n { ubuntu } }
+  {
+    \ctex_zhmap_case:nnn
+      {
+        \setCJKmainfont { SourceHanSerifCN-Regular.otf }
+          [ BoldFont = SourceHanSerifCN-Bold.otf, ItalicFont = Adobe-Fangsong-Std.otf ]
+        \setCJKsansfont { SourceHanSansSC-Regular.otf  }
+          [ BoldFont = SourceHanSansSC-Bold.otf  ]
+        \setCJKmonofont { SourceHanMono.ttc }
+          [ BoldFont = SourceHanMono.ttc ]
+        \setCJKfamilyfont { zhsong } { SourceHanSerifCN-Regular.otf }
+          [ BoldFont = SourceHanSerifCN-Bold.otf ]
+        \setCJKfamilyfont { zhhei  } { SourceHanSansSC-Regular.otf  }
+          [ BoldFont = SourceHanSansSC-Bold.otf  ]
+        \setCJKfamilyfont { zhkai  } { Adobe-Kaiti-Std.otf              }
+        \setCJKfamilyfont { zhfs   } { Adobe-Fangsong-Std.otf  }
+        \ctex_punct_set:n { ubuntu }
+        \ctex_punct_map_family:nn   { \CJKrmdefault        } { zhsong  }
+        \ctex_punct_map_family:nn   { \CJKsfdefault        } { zhhei   }
+        \ctex_punct_map_family:nn   { \CJKttdefault        } { zhfs    }
+        \ctex_punct_map_itshape:nn  { \CJKrmdefault        } { zhkai   }
+        \ctex_punct_map_bfseries:nn { \CJKsfdefault, zhhei } { zhheib  }
+        \ctex_punct_map_bfseries:nn
+          { \CJKrmdefault, \CJKttdefault, zhsong }
+          { zhsongb }
+      }
+      {
+        \ctex_load_zhmap:nnnn { rm } { zhhei } { zhfs } { ubuntu }
+        \ctex_punct_set:n { ubuntu }
+        \ctex_punct_map_family:nn   { \CJKrmdefault } { zhsong }
+        \ctex_punct_map_bfseries:nn { \CJKrmdefault } { zhhei  }
+        \ctex_punct_map_itshape:nn  { \CJKrmdefault } { zhkai  }
+      }
+      { \ctex_fontset_error:n { ubuntu } }
+  }
+  {
+    \ctex_set_upmap_unicode:nnn { upserif }
+      { SourceHanSerifCN-Regular.otf } { SourceHanSerifCN-Bold.otf }
+    \ctex_set_upmap_unicode:nnn { upsans  }
+      { SourceHanSansSC-Regular.otf  } { SourceHanSansSC-Bold.otf  }
+    \ctex_set_upmap_unicode:nnn { upmono  }
+      { SourceHanSerifCN-Regular.otf } { }
+    \ctex_set_upmap:nnn { upserifit } { Adobe-Fangsong-Std.otf } { }
+    \ctex_set_upfamily:nnn { zhsong } { upzhserif   } { upzhserifb }
+    \ctex_set_upfamily:nnn { zhhei  } { upzhsans    } { upzhsansb  }
+    \ctex_set_upfamily:nnn { zhfs  } { upzhmono } { }
+    \ctex_set_upfamily:nnn { zhkai  } { upzhserifit } { }
+  }
+  {
+    \setCJKmainfont { Source~Han~Serif~CN } [ ItalicFont = Adobe~Fangsong~Std ]
+    \setCJKsansfont { Source~Han~Sans~SC  }
+    \setCJKmonofont { Source~Han~Mono~SC  }
+    \setCJKfamilyfont { zhsong } { Source~Han~Serif~CN  }
+    \setCJKfamilyfont { zhhei  } { Source~Han~Sans~SC   }
+    \setCJKfamilyfont { zhkai  } { Adobe~Kaiti~Std    }
+    \setCJKfamilyfont { zhfs   } { Adobe~Fangsong~Std }
+  }
+\NewDocumentCommand \songti   { } { \CJKfamily { zhsong  } }
+\NewDocumentCommand \heiti    { } { \CJKfamily { zhhei   } }
+\NewDocumentCommand \kaishu   { } { \CJKfamily { zhkai   } }
+\NewDocumentCommand \fangsong { } { \CJKfamily { zhfs    } }

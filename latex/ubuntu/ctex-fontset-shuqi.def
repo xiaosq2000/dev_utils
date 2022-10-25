@@ -1,4 +1,4 @@
-\ProvidesExplFile{ctex-fontset-shuqi-ubuntu.def}
+\ProvidesExplFile{ctex-fontset-shuqi.def}
   {\ExplFileDate}{2.5.8}{\ExplFileDescription}
 \ctex_fontset_case:nnnn
   { \ctex_fontset_error:n { ubuntu } }

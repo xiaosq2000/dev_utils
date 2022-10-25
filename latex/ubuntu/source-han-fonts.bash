@@ -10,6 +10,4 @@ cd /usr/share/fonts/source-han; mkdir -p mono; cd mono
 wget https://github.com/adobe-fonts/source-han-mono/releases/download/1.002/SourceHanMono.ttc -e use_proxy=on -e http_proxy=${http_proxy}
 chmod -R 755 /usr/share/fonts/source-han
 cd /usr/share/fonts/source-han
-mkfontscale
-mkfontdir
-fc-cache -fv
+fc-cache -fsv
