@@ -1,16 +1,26 @@
 {
+    // C/C++
+    "C_Cpp.autocomplete": "Disabled",
+    "C_Cpp.formatting": "Disabled",
+    "C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.intelliSenseEngine": "Disabled",
+    // CMake Tools
     "cmake.configureArgs": ["-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"],
     "cmake.buildDirectory": "${workspaceFolder}/build",
     "cmake.parallelJobs": 0,
     "cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
     "cmake.autoSelectActiveFolder": true,
-    "ccls.launch.command": "/root/dev_utils/language_server/ccls/Release/ccls",
-    "ccls.misc.compilationDatabaseDirectory": "build",
+    // ccls
+    "ccls.launch.command": "/root/dev_utils/cpp/ccls/Release/ccls",
+    "ccls.misc.compilationDatabaseDirectory": "build/vslam",
     "[cpp]": {
         "editor.defaultFormatter": "ccls-project.ccls"
     },
     "ccls.codeLens.enabled": false,
+    // cpplint
+    "cpplint.cpplintPath": "/usr/local/bin/cpplint",
+    // doxdocgen
     "doxdocgen.generic.authorName": "肖书奇",
     "doxdocgen.file.fileOrder": [
         "file",
