@@ -1,22 +1,22 @@
 inoremap jk <ESC>
 set encoding=utf-8
-set nobackup      
-set noswapfile    
+set nobackup
+set noswapfile
 set expandtab
-set tabstop=4     
-set softtabstop=4 
-set shiftwidth=4  
-set autoindent    
-syntax on         
-set number        
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set autoindent
+syntax on
+set number
 set relativenumber
-set showmatch     
-set wrap          
-set autoread      
-set showcmd       
-set wildmenu      
-set hlsearch      
-set incsearch     
+set showmatch
+set wrap
+set autoread
+set showcmd
+set wildmenu
+set hlsearch
+set incsearch
 let g:molokai_original = 1
 let g:rehash256 = 1
 let &t_SI = "\e[6 q"
