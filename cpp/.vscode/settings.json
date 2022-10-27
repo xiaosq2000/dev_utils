@@ -13,7 +13,7 @@
     "cmake.autoSelectActiveFolder": true,
     // ccls
     "ccls.launch.command": "/root/dev_utils/cpp/ccls/Release/ccls",
-    "ccls.misc.compilationDatabaseDirectory": "build/vslam",
+    "ccls.misc.compilationDatabaseDirectory": "build",
     "[cpp]": {
         "editor.defaultFormatter": "ccls-project.ccls"
     },
