@@ -12,12 +12,12 @@
     "cmake.configureOnEdit": false,
     "cmake.autoSelectActiveFolder": true,
     // ccls
-    "ccls.launch.command": "/root/dev_utils/cpp/ccls/Release/ccls",
+    "ccls.launch.command": "/root/ccls/Release/ccls",
     "ccls.misc.compilationDatabaseDirectory": "build",
     "[cpp]": {
         "editor.defaultFormatter": "ccls-project.ccls"
     },
-    "ccls.codeLens.enabled": false,
+    "ccls.codeLens.enabled": true,
     // cpplint
     "cpplint.cpplintPath": "/usr/local/bin/cpplint",
     // doxdocgen
