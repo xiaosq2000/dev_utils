@@ -10,29 +10,59 @@
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
 
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\RequirePackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    % linkcolor=blue,
+    % filecolor=magenta,      
+    % urlcolor=cyan,
+}
+
+\RequirePackage{newfloat}
+\RequirePackage[nameinlink]{cleveref}
+
+\SetupFloatingEnvironment{figure}{chapterlistsgaps=off}
+\SetupFloatingEnvironment{table}{chapterlistsgaps=off}
+
+\newif\ifshuqipkgoptions@language\shuqipkgoptions@languagefalse% default: false 
+\DeclareOption{chinese}{\shuqipkgoptions@languagetrue}
 \newif\ifshuqipkgoptions@tuftefonts\shuqipkgoptions@tuftefontsfalse% default: false 
 \DeclareOption{tufte-fonts}{\shuqipkgoptions@tuftefontstrue}
-\newif\ifshuqipkgoptions@language\shuqipkgoptions@languagefalse% default: false 
-\DeclareOption{ch}{\shuqipkgoptions@languagetrue}
 \newif\ifshuqipkgoptions@adobefonts\shuqipkgoptions@adobefontsfalse% default: false 
-\DeclareOption{customized-adobe-fonts}{\shuqipkgoptions@adobefontstrue}
-
+\DeclareOption{adobe-fonts}{\shuqipkgoptions@adobefontstrue}
 \DeclareOption*{\OptionNotUsed}
-\ProcessOptions\relax
 
+\ProcessOptions\relax
 \ifshuqipkgoptions@language
+  \DeclareFloatingEnvironment[name=代码,listname=代码,chapterlistsgaps=off]{tufteListing}
+  \crefname{figure}{图}{图}
+  \crefname{table}{表}{表}
+  \crefname{tufteListing}{代码}{代码}
   \ifshuqipkgoptions@adobefonts
     \RequirePackage[fontset=customized-adobe]{ctex}
   \else
     \RequirePackage{ctex}
   \fi
-\fi
-\ifshuqipkgoptions@adobefonts
-  \setmonofont{Source Code Pro}
+\else 
+  \DeclareFloatingEnvironment[name=Code,listname=Code,chapterlistsgaps=off]{tufteListing}
+  \crefname{figure}{figure}{figures}
+  \crefname{table}{table}{tables}
+  \crefname{tufteListing}{code}{code}
+  \RequirePackage{xeCJK}
 \fi
 \ifshuqipkgoptions@tuftefonts
   \setmainfont{Bembo}
   \setsansfont{Gill Sans}
+\fi
+\ifshuqipkgoptions@adobefonts
+  \setmonofont{Source Code Pro}
 \fi
 
 % define subtitle command for tufte-book
@@ -83,27 +113,12 @@
 \makeatother
 
 
-\RequirePackage{amsmath}
-\RequirePackage{amsfonts}
-\RequirePackage{amssymb}
-\RequirePackage{amsthm}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-
-\RequirePackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    % linkcolor=blue,
-    % filecolor=magenta,      
-    % urlcolor=cyan,
-}
-
-\definecolor{solarized-light-bgcolor}{rgb}{0.99,0.96,0.89}
 \RequirePackage[]{minted}
-\usemintedstyle{solarized-light}
-\setminted[bash]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,bgcolor=solarized-light-bgcolor,fontsize=\footnotesize}
-\setminted[PowerShell]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,bgcolor=solarized-light-bgcolor,fontsize=\footnotesize}
-\setminted[yaml]{encoding=utf-8,linenos=true,mathescape=true,autogobble=true,breaklines=true,bgcolor=solarized-light-bgcolor,fontsize=\footnotesize}
+\definecolor{one-dark-bgcolor}{rgb}{0.96, 0.96, 0.96}
+\usemintedstyle{one-dark}
+\setminted[bash]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,breakanywhere=true,bgcolor=one-dark-bgcolor,fontsize=\scriptsize}
+\setminted[PowerShell]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,breakanywhere=true,bgcolor=one-dark-bgcolor,fontsize=\footnotesize}
+\setminted[yaml]{encoding=utf-8,linenos=true,mathescape=true,autogobble=true,breaklines=true,breakanywhere=true,bgcolor=one-dark-bgcolor,fontsize=\footnotesize}
 
 % https://stackoverflow.com/questions/59551243/how-to-align-an-enumerated-list-in-latex
 \RequirePackage{enumitem}
@@ -112,15 +127,5 @@
 
 \RequirePackage{booktabs}
 \RequirePackage{makeidx}
-
-\RequirePackage{newfloat}
-\SetupFloatingEnvironment{figure}{chapterlistsgaps=off}
-\SetupFloatingEnvironment{table}{chapterlistsgaps=off}
-\DeclareFloatingEnvironment[name=代码,listname=代码,chapterlistsgaps=off]{tufteListing}
-
-\RequirePackage[nameinlink]{cleveref}
-\crefname{figure}{图}{图}
-\crefname{table}{表}{表}
-\crefname{tufteListing}{代码}{代码}
 
 \endinput
