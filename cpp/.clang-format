@@ -1,1 +1,16 @@
 BasedOnStyle: Google
+UseTab: Never
+IndentWidth: 4
+TabWidth: 4
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: false
+ColumnLimit: 120
+PointerAlignment: Right
+IndentPPDirectives: BeforeHash
+AlignConsecutiveAssignments: true
+AlignConsecutiveMacros: true
+AccessModifierOffset: -3
+AllowAllConstructorInitializersOnNextLine: false
+ContinuationIndentWidth: 8
+AlignTrailingComments: true
+SpacesBeforeTrailingComments: 3

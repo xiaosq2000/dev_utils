@@ -5,7 +5,9 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.intelliSenseEngine": "Disabled",
     // CMake Tools
-    "cmake.configureArgs": ["-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"],
+    "cmake.configureArgs": [
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+    ],
     "cmake.buildDirectory": "${workspaceFolder}/build",
     "cmake.parallelJobs": 0,
     "cmake.configureOnOpen": false,
@@ -20,6 +22,10 @@
     "ccls.codeLens.enabled": true,
     // cpplint
     "cpplint.cpplintPath": "/usr/local/bin/cpplint",
+    "cpplint.filters": [
+        "-whitespace,+whitespace/braces,-readability/casting",
+    ],
+    "cpplint.lineLength": 120,
     // doxdocgen
     "doxdocgen.generic.authorName": "肖书奇",
     "doxdocgen.file.fileOrder": [
