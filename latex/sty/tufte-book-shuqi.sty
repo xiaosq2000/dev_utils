@@ -11,10 +11,13 @@
 \RequirePackage[T1]{fontenc}
 
 \RequirePackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 \RequirePackage{amsfonts}
 \RequirePackage{amssymb}
 \RequirePackage{amsthm}
 \newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
 
 \RequirePackage{hyperref}
@@ -117,8 +120,9 @@
 \definecolor{one-dark-bgcolor}{rgb}{0.96, 0.96, 0.96}
 \usemintedstyle{one-dark}
 \setminted[bash]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,breakanywhere=true,bgcolor=one-dark-bgcolor,fontsize=\scriptsize}
-\setminted[PowerShell]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,breakanywhere=true,bgcolor=one-dark-bgcolor,fontsize=\footnotesize}
-\setminted[yaml]{encoding=utf-8,linenos=true,mathescape=true,autogobble=true,breaklines=true,breakanywhere=true,bgcolor=one-dark-bgcolor,fontsize=\footnotesize}
+\setminted[Powershell]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,breakanywhere=true,bgcolor=one-dark-bgcolor,fontsize=\scriptsize}
+\setminted[c++]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,breakanywhere=true,bgcolor=one-dark-bgcolor,fontsize=\scriptsize}
+\setminted[yaml]{encoding=utf-8,linenos=true,mathescape=false,autogobble=true,breaklines=true,breakanywhere=true,bgcolor=one-dark-bgcolor,fontsize=\scriptsize}
 
 % https://stackoverflow.com/questions/59551243/how-to-align-an-enumerated-list-in-latex
 \RequirePackage{enumitem}
