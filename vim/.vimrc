@@ -15,6 +15,8 @@ Plugin 'VundleVim/Vundle.vim'
 " plugin on GitHub repo
 " Plugin 'tpope/vim-fugitive'
 Plugin 'ycm-core/YouCompleteMe'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'lervag/vimtex'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -43,17 +45,24 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 set shell=/bin/bash
-
+set backspace=indent,eol,start
+set history=200
 inoremap jk <ESC>
+set ttimeout
+set ttimeoutlen=100
+set display=truncate
+set nrformats-=octal
 set encoding=utf-8
+inoremap <C-U> <C-G>u<C-U>
 set nobackup
 set noswapfile
+set ruler
 set expandtab
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set autoindent
-syntax on
+set syntax=ON
 set number
 set relativenumber
 set showmatch
@@ -61,7 +70,7 @@ set wrap
 set autoread
 set showcmd
 set wildmenu
-set hlsearch
+set nohlsearch
 set incsearch
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
@@ -69,3 +78,4 @@ let &t_EI = "\e[2 q"
 let g:ycm_clangd_uses_ycmd_caching = 0
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
 let g:ycm_clangd_binary_path = exepath("clangd")
+let g:vimtex_view_method = 'zathura'
