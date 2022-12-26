@@ -1,81 +1,97 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible
+call plug#begin()
+Plug 'sheerun/vim-polyglot'
+Plug 'sainnhe/everforest'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'lervag/vimtex', { 'for': 'tex' }
+Plug 'ekalinin/Dockerfile.vim'
+call plug#end()
+set nobackup                   " no backup files
+set noswapfile                 " no swap files
+set encoding=utf-8             " unicode encoding
+set shell=/bin/bash            " use bash
+"set shellcmdflag=-ic           " flag passed to the shell to execute "!" and ":!" commands
+set wrap                       " lines longer than the width display on the next line
+set backspace=indent,eol,start " allow backspacing over everything in insert mode. 
+set ruler                      " show the line and column number of the cursor position
+set autoindent                 " copy indent from current line when starting a new line
+set showmatch                  " when a bracket is inserted, briefly jump to the matching one
+set showcmd	   	               " display incomplete commands
+set number                     " display line numbers
+set relativenumber             " display relative line numbers
+set wildmenu		               " display completion matches in a status line
+set timeout                    " time out on :mappings and key codes
+set ttimeoutlen=100            " The time in milliseconds that is waited for a keycode to complete.
+set timeoutlen=1000            " The time in milliseconds that is waited for a mapped key sequence to complete.
+set display=truncate           " Show @@@ in the last line if it is truncated.
+set incsearch                  " incremental search
+set tabstop=2                  " number of spaces that a <Tab> in the file counts for
+set softtabstop=2              " number of spaces that a <Tab> counts for while performing editing operations
+set shiftwidth=2               " number of spaces to use for each step of (auto)indent.
+set expandtab                  " use spaces instead of tabs
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-" Plugin 'tpope/vim-fugitive'
-Plugin 'ycm-core/YouCompleteMe'
-Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'lervag/vimtex'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-set shell=/bin/bash
-set backspace=indent,eol,start
-set history=200
 inoremap jk <ESC>
-set ttimeout
-set ttimeoutlen=100
-set display=truncate
-set nrformats-=octal
-set encoding=utf-8
-inoremap <C-U> <C-G>u<C-U>
-set nobackup
-set noswapfile
-set ruler
-set expandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set autoindent
-syntax on
-set number
-set relativenumber
-set showmatch
-set wrap
-set autoread
-set showcmd
-set wildmenu
-set nohlsearch
-set incsearch
+
+" Put these in an autocmd group, so that you can revert them with:
+" ":augroup vim_startup | exe 'au!' | augroup END"
+augroup vim_startup
+  au!
+  " When editing a file, always jump to the last known cursor position. Don't do it when the position is invalid, when inside an event handler (happens when dropping a file on gvim) and for a commit message (it's likely a different one than last time).
+  autocmd BufReadPost *
+    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+    \ |   exe "normal! g`\""
+    \ | endif
+augroup END
+" cursor theme
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
-" Let clangd fully control code completion
-let g:ycm_clangd_uses_ycmd_caching = 0
-" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-let g:ycm_clangd_binary_path = exepath("clangd")
-let g:vimtex_view_method = 'zathura'
+" color theme
+if has('termguicolors')
+  set termguicolors
+endif
+" set background=light
+set background=dark
+let g:everforest_background = 'soft' " soft, medium or hard
+let g:everforest_better_performance = 1
+colorscheme everforest
+" you-complete-me
+let g:ycm_clangd_uses_ycmd_caching = 0           " Let clangd fully control code completion
+let g:ycm_clangd_binary_path = exepath("clangd") " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+" cpp shortcuts
+augroup ycm_cpp_shortcuts
+  au!
+  autocmd FileType c,cpp,h,hpp
+    \ nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR> 
+    \ | nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR> 
+    \ | nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
+augroup END
+" vimtex
+if exists("loaded_vimtex")
+  let g:vimtex_view_method = 'zathura'
+  let g:vimtex_compiler_latexmk = {
+      \ 'build_dir' : '',
+      \ 'callback' : 1,
+      \ 'continuous' : 1,
+      \ 'executable' : 'latexmk',
+      \ 'hooks' : [],
+      \ 'options' : [
+      \   '-verbose',
+      \   '-file-line-error',
+      \   '-synctex=1',
+      \   '-interaction=nonstopmode',
+      \   '-shell-escape'
+      \ ],
+      \}
+  augroup vimtex_tex_root
+    autocmd!
+    autocmd BufReadPre **/*.tex
+          \ let b:vimtex_main = './main.tex'
+  augroup END
+  augroup vimtex_ycm
+    autocmd!
+    if !exists('g:ycm_semantic_triggers')
+      let g:ycm_semantic_triggers = {}
+    endif
+    au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
+  augroup END
+endif
