@@ -42,31 +42,41 @@ augroup vim_startup
     \ |   exe "normal! g`\""
     \ | endif
 augroup END
-" cursor theme
+" cursor
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
-" color theme
+" color
 if has('termguicolors')
   set termguicolors
 endif
+
+" plugin: everforest colortheme
+if filereadable(expand("$HOME/.vim/plugged/everforest/colors/everforest.vim"))
 " set background=light
-set background=dark
-let g:everforest_background = 'soft' " soft, medium or hard
-let g:everforest_better_performance = 1
-colorscheme everforest
-" you-complete-me
-let g:ycm_clangd_uses_ycmd_caching = 0           " Let clangd fully control code completion
-let g:ycm_clangd_binary_path = exepath("clangd") " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-" cpp shortcuts
-augroup ycm_cpp_shortcuts
-  au!
-  autocmd FileType c,cpp,h,hpp
-    \ nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR> 
-    \ | nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR> 
-    \ | nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
-augroup END
-" vimtex
-if exists("loaded_vimtex")
+  set background=dark
+  let g:everforest_background = 'soft' " soft, medium or hard
+  if exists('g:loaded_sensible')
+    let g:everforest_better_performance = 1
+  endif
+  colorscheme everforest
+endif
+
+" plugin: you-complete-me
+if exists('g:loaded_youcompleteme')
+  let g:ycm_clangd_uses_ycmd_caching = 0           " Let clangd fully control code completion
+  let g:ycm_clangd_binary_path = exepath("clangd") " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+  " cpp shortcuts 
+  augroup ycm_cpp_shortcuts
+    au!
+    autocmd FileType c,cpp,h,hpp
+      \ nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR> 
+      \ | nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR> 
+      \ | nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
+  augroup END
+endif
+
+" plugin: vimtex
+if exists('g:loaded_vimtex')
   let g:vimtex_view_method = 'zathura'
   let g:vimtex_compiler_latexmk = {
       \ 'build_dir' : '',
