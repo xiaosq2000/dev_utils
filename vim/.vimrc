@@ -3,14 +3,14 @@ call plug#begin()
 Plug 'sheerun/vim-polyglot'
 Plug 'sainnhe/everforest'
 Plug 'ycm-core/YouCompleteMe'
-Plug 'lervag/vimtex', { 'for': 'tex' }
+Plug 'lervag/vimtex'
 Plug 'ekalinin/Dockerfile.vim'
 call plug#end()
 set nobackup                   " no backup files
 set noswapfile                 " no swap files
 set encoding=utf-8             " unicode encoding
 set shell=/bin/bash            " use bash
-"set shellcmdflag=-ic           " flag passed to the shell to execute "!" and ":!" commands
+" set shellcmdflag=-ic         " flag passed to the shell to execute "!" and ":!" commands
 set wrap                       " lines longer than the width display on the next line
 set backspace=indent,eol,start " allow backspacing over everything in insert mode. 
 set ruler                      " show the line and column number of the cursor position
@@ -76,32 +76,30 @@ if exists('g:loaded_youcompleteme')
 endif
 
 " plugin: vimtex
-if exists('g:loaded_vimtex')
-  let g:vimtex_view_method = 'zathura'
-  let g:vimtex_compiler_latexmk = {
-      \ 'build_dir' : '',
-      \ 'callback' : 1,
-      \ 'continuous' : 1,
-      \ 'executable' : 'latexmk',
-      \ 'hooks' : [],
-      \ 'options' : [
-      \   '-verbose',
-      \   '-file-line-error',
-      \   '-synctex=1',
-      \   '-interaction=nonstopmode',
-      \   '-shell-escape'
-      \ ],
-      \}
-  augroup vimtex_tex_root
-    autocmd!
-    autocmd BufReadPre **/*.tex
-          \ let b:vimtex_main = './main.tex'
-  augroup END
-  augroup vimtex_ycm
-    autocmd!
-    if !exists('g:ycm_semantic_triggers')
-      let g:ycm_semantic_triggers = {}
-    endif
-    au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
-  augroup END
-endif
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_compiler_latexmk = {
+    \ 'build_dir' : '',
+    \ 'callback' : 1,
+    \ 'continuous' : 1,
+    \ 'executable' : 'latexmk',
+    \ 'hooks' : [],
+    \ 'options' : [
+    \   '-shell-escape',
+    \   '-verbose',
+    \   '-file-line-error',
+    \   '-synctex=1',
+    \   '-interaction=nonstopmode'
+    \ ],
+    \}
+augroup vimtex_tex_root
+  autocmd!
+  autocmd BufReadPre **/*.tex
+        \ let b:vimtex_main = './main.tex'
+augroup END
+augroup vimtex_ycm
+  autocmd!
+  if !exists('g:ycm_semantic_triggers')
+    let g:ycm_semantic_triggers = {}
+  endif
+  au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
+augroup END
