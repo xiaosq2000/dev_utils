@@ -1,0 +1,30 @@
+services:
+  vslam_dev:
+    image: vslam:noetic_dev
+    container_name: vslam
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    network_mode: host
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - TERM=xterm-color
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=graphics,display
+      - http_proxy=http://127.0.0.1:1080
+      - https_proxy=https://127.0.0.1:1080
+      - HTTP_PROXY=http://127.0.0.1:1080
+      - HTTPS_PROXY=https://127.0.0.1:1080
+    volumes:
+      - /home/shuqi/code/ros_packages/vslam_tools/:/root/catkin_ws/src/vslam_tools:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /home/shuqi/.vimrc:/root/.vimrc:rw
+      - /home/shuqi/data/input/:/root/data/input/:rw
+      - /home/shuqi/data/output/:/root/data/output/:rw

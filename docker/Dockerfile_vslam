@@ -1,0 +1,70 @@
+ARG ROS_DISTRO
+FROM ros:${ROS_DISTRO}
+ARG http_proxy
+ARG HTTP_PROXY
+ARG https_proxy
+ARG HTTPS_PROXY
+ENV http_proxy ${http_proxy}
+ENV HTTP_PROXY ${HTTP_PROXY}
+ENV https_proxy ${https_proxy}
+ENV HTTPS_PROXY ${HTTPS_PROXY}
+ARG COMPILE_JOBS
+RUN git config --global http.proxy ${http_proxy} && \
+    git config --global https.proxy ${https_proxy}
+# build and install eigen
+ARG EIGEN_VERSION
+ENV EIGEN_VERSION ${EIGEN_VERSION}
+ENV EIGEN_GIT_URL https://gitlab.com/libeigen/eigen
+RUN git clone ${EIGEN_GIT_URL} && \
+    cd eigen && \
+    git checkout ${EIGEN_VERSION} && \
+    cmake . -Bbuild -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build build -j ${COMPILE_JOBS} && \
+    cmake --install build && \
+    rm -rf ../eigen
+# build and install ceres
+ARG CERES_VERSION
+ENV CERES_VERSION ${CERES_VERSION}
+ENV CERES_GIT_URL https://github.com/ceres-solver/ceres-solver
+RUN git clone ${CERES_GIT_URL} && \
+    cd ceres-solver && \
+    git checkout ${CERES_VERSION} && \
+    cmake . -Bbuild -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build build -j ${COMPILE_JOBS} && \
+    cmake --install build && \
+    rm -rf ../ceres-solver
+# build and install opencv3
+ARG OPENCV3_VERSION
+ENV OPENCV3_VERSION ${OPENCV3_VERSION}
+ENV OPENCV3_SRC_URL https://github.com/opencv/opencv/archive/refs/tags/${OPENCV3_VERSION}.tar.gz
+RUN wget ${OPENCV3_SRC_URL} && \
+    tar xvf ${OPENCV3_VERSION}.tar.gz && \
+    cd opencv-${OPENCV3_VERSION} && \
+    cmake . -Bbuild -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build build -j ${COMPILE_JOBS} && \
+    cmake --install build && \
+    rm -rf ../opencv-${OPENCV3_VERSION} ../${OPENCV3_VERSION}.tar.gz
+# build and install opencv4
+ARG OPENCV4_VERSION
+ENV OPENCV4_VERSION ${OPENCV4_VERSION}
+ENV OPENCV4_SRC_URL https://github.com/opencv/opencv/archive/refs/tags/${OPENCV4_VERSION}.tar.gz
+RUN wget ${OPENCV4_SRC_URL} && \
+    tar xvf ${OPENCV4_VERSION}.tar.gz && \
+    cd opencv-${OPENCV4_VERSION} && \
+    cmake . -Bbuild -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build build -j ${COMPILE_JOBS} && \
+    cmake --install build && \
+    rm -rf ../opencv-${OPENCV4_VERSION} ../${OPENCV4_VERSION}.tar.gz
+# install python modules
+RUN source ${PYTHON3_VENV_WORKSPACE}/bin/activate && \
+    python3 -m pip install --upgrade --proxy ${http_proxy} \
+    pytransform3d \
+    && \
+    python3 -m pip install --proxy ${http_proxy} evo --upgrade --no-binary evo && \
+    deactivate 
+RUN git config --global --unset http.proxy && \
+    git config --global --unset https.proxy
+ENV http_proxy ""
+ENV HTTP_PROXY ""
+ENV https_proxy ""
+ENV HTTPS_PROXY ""

@@ -1,0 +1,24 @@
+ARG BASE_IMAGE BASE_TAG
+FROM ${BASE_IMAGE}:${BASE_TAG}
+SHELL ["/bin/bash", "-c"]
+ARG http_proxy HTTP_PROXY https_proxy HTTPS_PROXY
+ENV http_proxy=${http_proxy}
+ENV HTTP_PROXY=${HTTP_PROXY}
+ENV https_proxy=${https_proxy}
+ENV HTTPS_PROXY=${HTTPS_PROXY}
+ARG CACHE_DATE
+RUN git config --global http.proxy ${http_proxy} && \
+    git config --global https.proxy ${https_proxy} && \
+    curl -x ${http_proxy} -fLo ${HOME}/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && \
+    git clone https://github.com/xiaosq2000/dev_utils.git ${HOME}/dev_utils && \
+    cp ${HOME}/dev_utils/vim/.vimrc ${HOME}/.vimrc && \
+    vim -c PlugInstall -c qall && \
+    cd ${HOME}/.vim/plugged/YouCompleteMe && \
+    python3 install.py --clangd-completer --force-sudo && \
+    git config --global --unset http.proxy && \
+    git config --global --unset https.proxy
+ENV http_proxy=""
+ENV HTTP_PROXY=""
+ENV https_proxy=""
+ENV HTTPS_PROXY=""
