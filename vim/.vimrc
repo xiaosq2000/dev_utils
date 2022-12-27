@@ -62,18 +62,16 @@ if filereadable(expand("$HOME/.vim/plugged/everforest/colors/everforest.vim"))
 endif
 
 " plugin: you-complete-me
-if exists('g:loaded_youcompleteme')
-  let g:ycm_clangd_uses_ycmd_caching = 0           " Let clangd fully control code completion
-  let g:ycm_clangd_binary_path = exepath("clangd") " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-  " cpp shortcuts 
-  augroup ycm_cpp_shortcuts
-    au!
-    autocmd FileType c,cpp,h,hpp
-      \ nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR> 
-      \ | nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR> 
-      \ | nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
-  augroup END
-endif
+let g:ycm_clangd_uses_ycmd_caching = 0           " Let clangd fully control code completion
+let g:ycm_clangd_binary_path = exepath("clangd") " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+" cpp shortcuts 
+augroup ycm_cpp_shortcuts
+  au!
+  autocmd FileType c,cpp,h,hpp
+    \ nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR> 
+    \ | nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR> 
+    \ | nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
+augroup END
 
 " plugin: vimtex
 let g:vimtex_view_method = 'zathura'
