@@ -1,0 +1,14 @@
+ARG BASE_IMAGE BASE_TAG
+FROM ${BASE_IMAGE}:${BASE_TAG}
+ARG ORBSLAM3_GIT_URL="https://github.com/electech6/ORB_SLAM3_detailed_comments.git"
+ARG ORBSLAM3_GIT_HASH="a11ca1ed8ec797b59bad7295bac010bdf70734eb"
+ENV ORBSLAM3_GIT_URL=${ORBSLAM3_GIT_URL}
+ENV ORBSLAM3_GIT_HASH=${ORBSLAM3_GIT_HASH}
+ARG COMPILE_JOBS
+RUN git config --global http.proxy ${http_proxy} && \
+    git config --global https.proxy ${https_proxy} && \
+    git clone ${ORBSLAM3_GIT_URL} ${CATKIN_WORKSPACE}/src/ && \
+    git config --global --unset http.proxy && \
+    git config --global --unset https.proxy && \
+    cd ${CATKIN_WORKSPACE}/src/VINS-Fusion && \
+    git checkout ${ORBSLAM3_GIT_HASH} && \

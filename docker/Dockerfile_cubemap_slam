@@ -1,0 +1,46 @@
+ARG BASE_IMAGE BASE_TAG
+FROM ${BASE_IMAGE}:${BASE_TAG}
+ARG CUBEMAP_SLAM_GIT_URL="https://github.com/nkwangyh/CubemapSLAM.git"
+ARG CUBEMAP_SLAM_GIT_HASH="97d970991856b88f8ede60bb56165dfd2fb0cfe0"
+ARG PANGOLIN_GIT_URL="https://github.com/stevenlovegrove/Pangolin.git"
+ARG PANGOLIN_GIT_TAG="v0.6"
+ENV CUBEMAP_SLAM_GIT_URL=${CUBEMAP_SLAM_GIT_URL}
+ENV CUBEMAP_SLAM_GIT_HASH=${CUBEMAP_SLAM_GIT_HASH}
+ARG COMPILE_JOBS
+RUN git config --global http.proxy ${http_proxy} && \
+    git config --global https.proxy ${https_proxy} && \
+    git clone ${CUBEMAP_SLAM_GIT_URL} ${HOME}/CubemapSLAM && \
+    git clone ${PANGOLIN_GIT_URL} ${HOME}/Pangolin && \
+    git config --global --unset http.proxy && \
+    git config --global --unset https.proxy && \
+    cd ${HOME}/Pangolin && \
+    git checkout ${PANGOLIN_GIT_TAG} && \
+    cmake -Bbuild -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build build && \
+    cmake --install build && \
+    cd ${HOME}/CubemapSLAM && \
+    git checkout ${CUBEMAP_SLAM_GIT_HASH} && \
+    # https://github.com/raulmur/ORB_SLAM2/issues/337
+    sed -ie '34i #include <unistd.h>\n#include <stdio.h>\n#include <stdlib.h>' ${HOME}/CubemapSLAM/src/System.cpp && \
+    sed -ie '45i #include <unistd.h>\n#include <stdio.h>\n#include <stdlib.h>' ${HOME}/CubemapSLAM/src/Tracking.cpp && \
+    sed -ie '34i #include <unistd.h>\n#include <stdio.h>\n#include <stdlib.h>' ${HOME}/CubemapSLAM/src/LocalMapping.cpp && \
+    sed -ie '32i #include <unistd.h>\n#include <stdio.h>\n#include <stdlib.h>' ${HOME}/CubemapSLAM/src/Viewer.cpp && \
+    sed -ie '36i #include <unistd.h>\n#include <stdio.h>\n#include <stdlib.h>' ${HOME}/CubemapSLAM/src/LoopClosing.cpp && \
+    # bugfix
+    sed -ie '73s/12/nrinvpol/' ${HOME}/CubemapSLAM/src/System.cpp && \
+    # https://github.com/raulmur/ORB_SLAM2/pull/585
+    sed -i '55s/const KeyFrame\*/KeyFrame\* const/' include/LoopClosing.h && \
+    cd ${HOME}/CubemapSLAM/ThirdParty/g2o/ && \
+    cmake -Bbuild -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build build && \
+    cd ${HOME}/CubemapSLAM/ThirdParty/DBoW2/ && \
+    cmake -Bbuild -DCMAKE_BUILD_TYPE=Release -DOpenCV_DIR=/root/opencv-3.4.16/build/ && \
+    cmake --build build && \
+    cd ${HOME}/CubemapSLAM/ && \
+    cmake -Bbuild -DCMAKE_BUILD_TYPE=Release -DOpenCV_DIR=/root/opencv-3.4.16/build/ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && \
+    cmake --build build && \
+    cd ${HOME}/CubemapSLAM/Vocabulary && \
+    tar zxvf ORBvoc.txt.tar.gz && \
+    rm ORBvoc.txt.tar.gz && \
+    ln -s ${HOME}/CubemapSLAM/build/compile_commands.json ${HOME}/CubemapSLAM/compile_commands.json
+WORKDIR ${HOME}/CubemapSLAM

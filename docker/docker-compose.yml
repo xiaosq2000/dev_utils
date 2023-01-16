@@ -1,7 +1,169 @@
 services:
-  vslam_dev:
+  vslam:
     image: vslam:noetic_dev
     container_name: vslam
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    devices:
+      # - /dev/video0:/dev/video0:rw
+      # - /dev/video1:/dev/video1:rw
+      - /dev/ttyUSB0:/dev/ttyUSB0:rw
+      # - /dev/ttyUSB1:/dev/ttyUSB1:rw
+      # - /dev/ttyACM0:/dev/ttyACM0:rw
+      # - /dev/video2:/dev/video2:rw
+      # - /dev/video3:/dev/video3:rw
+    network_mode: host
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - TERM=xterm-color
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=graphics,display
+      - http_proxy=http://127.0.0.1:1080
+      - https_proxy=https://127.0.0.1:1080
+      - HTTP_PROXY=http://127.0.0.1:1080
+      - HTTPS_PROXY=https://127.0.0.1:1080
+    volumes:
+      - /home/shuqi/code/ros_packages/vslam_tools/:/root/catkin_ws/src/vslam_tools:rw
+      - /home/shuqi/code/ros_packages/usb_cam/:/root/catkin_ws/src/usb_cam:rw
+      - /home/shuqi/code/ros_packages/fdilink_ahrs/:/root/catkin_ws/src/fdilink_ahrs:rw
+      - /home/shuqi/code/ros_packages/rtk_driver/:/root/catkin_ws/src/rtk_driver:rw
+      - /home/shuqi/code/ros_packages/ocamcalib_undistort/:/root/catkin_ws/src/ocamcalib_undistort:rw
+      - /home/shuqi/code/ros_packages/serial/:/root/catkin_ws/src/serial:rw
+      - /home/shuqi/code/ros_packages/nmea_msgs/:/root/catkin_ws/src/nmea_msgs:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /home/shuqi/.vimrc:/root/.vimrc:rw
+      - /home/shuqi/data/input/:/root/data/input/:rw
+      - /home/shuqi/data/output/:/root/data/output/:rw
+    entrypoint: /root/data/input/vslam_entrypoint.bash
+    command: bash -i
+  kalibr:
+    image: kalibr:noetic_dev
+    container_name: kalibr
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    network_mode: host
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - TERM=xterm-color
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=graphics,display
+      - http_proxy=http://127.0.0.1:1080
+      - https_proxy=https://127.0.0.1:1080
+      - HTTP_PROXY=http://127.0.0.1:1080
+      - HTTPS_PROXY=https://127.0.0.1:1080
+      - KALIBR_MANUAL_FOCAL_LENGTH_INIT=1
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /home/shuqi/.vimrc:/root/.vimrc:rw
+      - /home/shuqi/data/input/:/root/data/input/:rw
+      - /home/shuqi/data/output/:/root/data/output/:rw
+  vins_mono:
+    image: vins_mono:noetic_dev
+    container_name: vins_mono
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    network_mode: host
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - TERM=xterm-color
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=graphics,display
+      - http_proxy=http://127.0.0.1:1080
+      - https_proxy=https://127.0.0.1:1080
+      - HTTP_PROXY=http://127.0.0.1:1080
+      - HTTPS_PROXY=https://127.0.0.1:1080
+    volumes:
+      - /home/shuqi/code/ros_packages/vslam_tools/:/root/catkin_ws/src/vslam_tools:rw
+      - /home/shuqi/code/ros_packages/ocamcalib_undistort/:/root/catkin_ws/src/ocamcalib_undistort:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /home/shuqi/.vimrc:/root/.vimrc:rw
+      - /home/shuqi/data/input/:/root/data/input/:rw
+      - /home/shuqi/data/output/:/root/data/output/:rw
+    entrypoint: /root/data/input/vins_mono_config/entrypoint.bash
+    command: bash -i
+  vins_fusion:
+    image: vins_fusion:noetic_dev
+    container_name: vins_fusion
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    network_mode: host
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - TERM=xterm-color
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=graphics,display
+      - http_proxy=http://127.0.0.1:1080
+      - https_proxy=https://127.0.0.1:1080
+      - HTTP_PROXY=http://127.0.0.1:1080
+      - HTTPS_PROXY=https://127.0.0.1:1080
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /home/shuqi/.vimrc:/root/.vimrc:rw
+      - /home/shuqi/data/input/:/root/data/input/:rw
+      - /home/shuqi/data/output/:/root/data/output/:rw
+  open_vins:
+    image: open_vins:noetic_dev
+    container_name: open_vins
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    network_mode: host
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - TERM=xterm-color
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=graphics,display
+      - http_proxy=http://127.0.0.1:1080
+      - https_proxy=https://127.0.0.1:1080
+      - HTTP_PROXY=http://127.0.0.1:1080
+      - HTTPS_PROXY=https://127.0.0.1:1080
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /home/shuqi/.vimrc:/root/.vimrc:rw
+      - /home/shuqi/data/input/:/root/data/input/:rw
+      - /home/shuqi/data/output/:/root/data/output/:rw
+  cubemap_slam:
+    image: cubemap_slam:noetic_dev
+    container_name: cubemap_slam
     stdin_open: true
     tty: true
     deploy:

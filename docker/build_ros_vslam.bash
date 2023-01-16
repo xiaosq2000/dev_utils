@@ -15,9 +15,9 @@ HTTPS_PROXY=${HTTPS_PROXY}
 ############################################################ 
 DOCKERFILE="Dockerfile_ros"
 DOCKER_IMAGE="ros"
-ROS_DISTRO="noetic"
-DOCKER_IMAGE_TAG=${ROS_DISTRO}
+DOCKER_IMAGE_TAG="noetic"
 
+ROS_DISTRO="noetic"
 CMAKE_VERSION=3.25.1
 PYTHON3_VERSION=3.10.9
 VIM_VERSION=8.2.4919
@@ -47,6 +47,7 @@ BASE_IMAGE="ros"
 BASE_TAG="noetic"
 DOCKER_IMAGE="ros"
 DOCKER_IMAGE_TAG="noetic_dev"
+
 CACHE_DATE=$(date)
 CACHE_DATE=${CACHE_DATE// /_} # replace spaces with underscores
 
@@ -65,12 +66,12 @@ docker build ${SCRIPT_DIR} \
 --build-arg https_proxy=${https_proxy} \
 --build-arg HTTPS_PROXY=${HTTPS_PROXY}
 
-############################################################ 
+########################################################## 
 DOCKERFILE="Dockerfile_vslam"
 DOCKER_IMAGE="vslam"
-ROS_DISTRO=noetic
-DOCKER_IMAGE_TAG=${ROS_DISTRO}
+DOCKER_IMAGE_TAG="noetic"
 
+ROS_DISTRO="noetic"
 EIGEN_VERSION=3.3.0
 CERES_VERSION=1.14.0
 OPENCV3_VERSION=3.4.16

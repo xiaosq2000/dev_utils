@@ -37,24 +37,28 @@ RUN git clone ${CERES_GIT_URL} && \
 ARG OPENCV3_VERSION
 ENV OPENCV3_VERSION ${OPENCV3_VERSION}
 ENV OPENCV3_SRC_URL https://github.com/opencv/opencv/archive/refs/tags/${OPENCV3_VERSION}.tar.gz
-RUN wget ${OPENCV3_SRC_URL} && \
+RUN cd ${HOME} && \ 
+    wget ${OPENCV3_SRC_URL} && \
     tar xvf ${OPENCV3_VERSION}.tar.gz && \
     cd opencv-${OPENCV3_VERSION} && \
     cmake . -Bbuild -DCMAKE_BUILD_TYPE=Release && \
     cmake --build build -j ${COMPILE_JOBS} && \
-    cmake --install build && \
-    rm -rf ../opencv-${OPENCV3_VERSION} ../${OPENCV3_VERSION}.tar.gz
+    # cmake --install build && \
+    # rm -rf ../opencv-${OPENCV3_VERSION} ../${OPENCV3_VERSION}.tar.gz
+    rm -rf ../${OPENCV3_VERSION}.tar.gz
 # build and install opencv4
 ARG OPENCV4_VERSION
 ENV OPENCV4_VERSION ${OPENCV4_VERSION}
 ENV OPENCV4_SRC_URL https://github.com/opencv/opencv/archive/refs/tags/${OPENCV4_VERSION}.tar.gz
-RUN wget ${OPENCV4_SRC_URL} && \
+RUN cd ${HOME} && \ 
+    wget ${OPENCV4_SRC_URL} && \
     tar xvf ${OPENCV4_VERSION}.tar.gz && \
     cd opencv-${OPENCV4_VERSION} && \
     cmake . -Bbuild -DCMAKE_BUILD_TYPE=Release && \
     cmake --build build -j ${COMPILE_JOBS} && \
-    cmake --install build && \
-    rm -rf ../opencv-${OPENCV4_VERSION} ../${OPENCV4_VERSION}.tar.gz
+    # cmake --install build && \
+    # rm -rf ../opencv-${OPENCV4_VERSION} ../${OPENCV4_VERSION}.tar.gz
+    rm -rf ../${OPENCV4_VERSION}.tar.gz
 # install python modules
 RUN source ${PYTHON3_VENV_WORKSPACE}/bin/activate && \
     python3 -m pip install --upgrade --proxy ${http_proxy} \
@@ -62,6 +66,32 @@ RUN source ${PYTHON3_VENV_WORKSPACE}/bin/activate && \
     && \
     python3 -m pip install --proxy ${http_proxy} evo --upgrade --no-binary evo && \
     deactivate 
+# cv_bridge built with customized OpenCV versions
+ARG ROS_PERCEPTION_VISION_OPENCV_GIT_URL="https://github.com/ros-perception/vision_opencv.git" 
+ENV ROS_PERCEPTION_VISION_OPENCV_GIT_URL=${ROS_PERCEPTION_VISION_OPENCV_GIT_URL}
+ARG ROS_PERCEPTION_VISION_OPENCV_GIT_HASH="08b012c038e575d7fe1d538f11235a994159dc93"
+ENV ROS_PERCEPTION_VISION_OPENCV_GIT_HASH=${ROS_PERCEPTION_VISION_OPENCV_GIT_HASH}
+RUN git clone ${ROS_PERCEPTION_VISION_OPENCV_GIT_URL} ${HOME}/vision_opencv && \
+    cd ${HOME}/vision_opencv && \
+    git checkout ${ROS_PERCEPTION_VISION_OPENCV_GIT_HASH} && \
+    OPENCV3_VERSION_MAJOR=`echo ${OPENCV3_VERSION} | cut -d. -f1` && \
+    OPENCV3_VERSION_MINOR=`echo ${OPENCV3_VERSION} | cut -d. -f2` && \
+    OPENCV3_VERSION_BUGFIX=`echo ${OPENCV3_VERSION} | cut -d. -f3` && \
+    cp -r ${HOME}/vision_opencv/cv_bridge ${HOME}/cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX} && \
+    cd ${HOME}/cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX} && \
+    sed -i "s/project(cv_bridge)/project(cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX})/g" CMakeLists.txt && \
+    sed -i "20,25s/^/# /g" CMakeLists.txt && \
+    sed -i "27i set(_opencv_version ${OPENCV3_VERSION})" CMakeLists.txt && \
+    sed -i "s/<name>cv_bridge/<name>cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX}/g" package.xml && \
+    OPENCV4_VERSION_MAJOR=`echo ${OPENCV4_VERSION} | cut -d. -f1` && \
+    OPENCV4_VERSION_MINOR=`echo ${OPENCV4_VERSION} | cut -d. -f2` && \
+    OPENCV4_VERSION_BUGFIX=`echo ${OPENCV4_VERSION} | cut -d. -f3` && \
+    cp -r ${HOME}/vision_opencv/cv_bridge ${HOME}/cv_bridge_${OPENCV4_VERSION_MAJOR}_${OPENCV4_VERSION_MINOR}_${OPENCV4_VERSION_BUGFIX} && \
+    cd ${HOME}/cv_bridge_${OPENCV4_VERSION_MAJOR}_${OPENCV4_VERSION_MINOR}_${OPENCV4_VERSION_BUGFIX} && \
+    sed -i "s/project(cv_bridge)/project(cv_bridge_${OPENCV4_VERSION_MAJOR}_${OPENCV4_VERSION_MINOR}_${OPENCV4_VERSION_BUGFIX})/g" CMakeLists.txt && \
+    sed -i "20,25s/^/# /g" CMakeLists.txt && \
+    sed -i "27i set(_opencv_version ${OPENCV4_VERSION})" CMakeLists.txt && \
+    sed -i "s/<name>cv_bridge/<name>cv_bridge_${OPENCV4_VERSION_MAJOR}_${OPENCV4_VERSION_MINOR}_${OPENCV4_VERSION_BUGFIX}/g" package.xml
 RUN git config --global --unset http.proxy && \
     git config --global --unset https.proxy
 ENV http_proxy ""

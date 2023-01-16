@@ -27,6 +27,10 @@ RUN apt-get update && \
     libx11-dev libxt-dev libxpm-dev xauth \
     # video for linux utilities
     v4l-utils \
+    # gtk modules
+    libcanberra-gtk-module \
+    # ros serial 
+    ros-${ROS_DISTRO}-serial \
     # document generator
     doxygen \
     # catkin build system
@@ -80,7 +84,7 @@ ENV PYTHON3_SRC_URL https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-
 RUN wget ${PYTHON3_SRC_URL} && \
     tar xvf Python-${PYTHON3_VERSION}.tar.xz && \
     cd Python-${PYTHON3_VERSION} && \
-    ./configure && \
+    ./configure --prefix=/usr --enable-shared --enable-optimizations && \
     make -j ${COMPILE_JOBS} && \
     make altinstall && \
     rm -rf ../Python-${PYTHON3_VERSION} ../Python-${PYTHON3_VERSION}.tar.xz

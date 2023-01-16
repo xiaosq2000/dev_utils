@@ -1,0 +1,27 @@
+ARG BASE_IMAGE BASE_TAG
+FROM ${BASE_IMAGE}:${BASE_TAG}
+ARG VINS_FUSION_GIT_URL="https://github.com/HKUST-Aerial-Robotics/VINS-Fusion.git"
+ARG VINS_FUSION_GIT_HASH="be55a937a57436548ddfb1bd324bc1e9a9e828e0"
+ENV VINS_FUSION_GIT_URL=${VINS_FUSION_GIT_URL}
+ENV VINS_FUSION_GIT_HASH=${VINS_FUSION_GIT_HASH}
+ARG COMPILE_JOBS
+RUN git config --global http.proxy ${http_proxy} && \
+    git config --global https.proxy ${https_proxy} && \
+    git clone ${VINS_FUSION_GIT_URL} ${CATKIN_WORKSPACE}/src/VINS-Fusion && \
+    git config --global --unset http.proxy && \
+    git config --global --unset https.proxy && \
+    cd ${CATKIN_WORKSPACE}/src/VINS-Fusion && \
+    git checkout ${VINS_FUSION_GIT_HASH} && \
+    find . -type f -exec sed -i "s/CV_GRAY2RGB/cv::COLOR_GRAY2RGB/g" {} \; && \
+    find . -type f -exec sed -i "s/CV_RGB2GRAY/cv::COLOR_RGB2GRAY/g" {} \; && \
+    find . -type f -exec sed -i "s/CV_FONT_HERSHEY_SIMPLEX/cv::FONT_HERSHEY_SIMPLEX/g" {} \; && \
+    find . -type f -exec sed -i "s/CV_LOAD_IMAGE_GRAYSCALE/cv::IMREAD_GRAYSCALE/g" {} \; && \
+    OPENCV3_VERSION_MAJOR=`echo ${OPENCV3_VERSION} | cut -d. -f1` && \
+    OPENCV3_VERSION_MINOR=`echo ${OPENCV3_VERSION} | cut -d. -f2` && \
+    OPENCV3_VERSION_BUGFIX=`echo ${OPENCV3_VERSION} | cut -d. -f3` && \
+    find . -type f -name CMakeLists.txt -exec sed -i "s/cv_bridge/cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX}/g" {} \; && \
+    mv ${HOME}/cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX} ./src && \
+    cd ${CATKIN_WORKSPACE} && \
+    catkin config --append-args -DOpenCV_DIR=${HOME}/opencv-${OPENCV3_VERSION}/build && \
+    catkin build cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX} -j ${COMPILE_JOBS} && \
+    catkin build -j ${COMPILE_JOBS} 

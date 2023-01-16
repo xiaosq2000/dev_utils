@@ -1,0 +1,15 @@
+ARG BASE_IMAGE BASE_TAG
+FROM ${BASE_IMAGE}:${BASE_TAG}
+ARG OPENVINS_GIT_URL="https://github.com/rpng/open_vins.git"
+ARG OPENVINS_GIT_HASH="c3259430f0574c2911ff8e6ce888f6a1fcff5928"
+ENV OPENVINS_GIT_URL=${OPENVINS_GIT_URL}
+ENV OPENVINS_GIT_HASH=${OPENVINS_GIT_HASH}
+ARG COMPILE_JOBS
+RUN git config --global http.proxy ${http_proxy} && \
+    git config --global https.proxy ${https_proxy} && \
+    git clone ${OPENVINS_GIT_URL} ${CATKIN_WORKSPACE}/src/open_vins && \
+    git config --global --unset http.proxy && \
+    git config --global --unset https.proxy && \
+    cd ${CATKIN_WORKSPACE}/src/open_vins && \
+    git checkout ${OPENVINS_GIT_HASH} && \
+    catkin build -w ${CATKIN_WORKSPACE} -j ${COMPILE_JOBS}

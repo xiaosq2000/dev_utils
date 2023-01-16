@@ -1,0 +1,30 @@
+ARG BASE_IMAGE BASE_TAG
+FROM ${BASE_IMAGE}:${BASE_TAG}
+ARG VINS_MONO_GIT_URL="https://github.com/HKUST-Aerial-Robotics/VINS-Mono.git"
+ARG VINS_MONO_GIT_HASH="01f9c910d4b5aa65282e6f10b7ab72e12f22d6cc"
+ENV VINS_MONO_GIT_URL=${VINS_MONO_GIT_URL}
+ENV VINS_MONO_GIT_HASH=${VINS_MONO_GIT_HASH}
+ARG FOCAL_LENGTH=460
+ENV FOCAL_LENGTH=${FOCAL_LENGTH}
+ARG COMPILE_JOBS
+RUN git config --global http.proxy ${http_proxy} && \
+    git config --global https.proxy ${https_proxy} && \
+    git clone ${VINS_MONO_GIT_URL} ${CATKIN_WORKSPACE}/src/VINS-Mono && \
+    git config --global --unset http.proxy && \
+    git config --global --unset https.proxy && \
+    cd ${CATKIN_WORKSPACE}/src/VINS-Mono && \
+    git checkout ${VINS_MONO_GIT_HASH} && \
+    find . -type f -exec sed -i "s/CV_RGB2GRAY/cv::COLOR_RGB2GRAY/g" {} \; && \
+    find . -type f -exec sed -i "s/CV_FONT_HERSHEY_SIMPLEX/cv::FONT_HERSHEY_SIMPLEX/g" {} \; && \
+    OPENCV3_VERSION_MAJOR=`echo ${OPENCV3_VERSION} | cut -d. -f1` && \
+    OPENCV3_VERSION_MINOR=`echo ${OPENCV3_VERSION} | cut -d. -f2` && \
+    OPENCV3_VERSION_BUGFIX=`echo ${OPENCV3_VERSION} | cut -d. -f3` && \
+    find . -type f -name CMakeLists.txt -exec sed -i "s/cv_bridge/cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX}/g" {} \; && \
+    find ${CATKIN_WORKSPACE}/src/VINS-Mono/feature_tracker/ -type f -exec sed -i 's@460@'"${FOCAL_LENGTH}"'@' {} \; && \
+    find ${CATKIN_WORKSPACE}/src/VINS-Mono/vins_estimator/ -type f -exec sed -i 's@460@'"${FOCAL_LENGTH}"'@' {} \; && \
+    find ${CATKIN_WORKSPACE}/src/VINS-Mono/pose_graph/ -type f -exec sed -i 's@460@'"${FOCAL_LENGTH}"'@' {} \; && \
+    cd ${CATKIN_WORKSPACE} && \
+    catkin config --append-args -DOpenCV_DIR=${HOME}/opencv-${OPENCV3_VERSION}/build && \
+    mv ${HOME}/cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX} ./src && \
+    catkin build cv_bridge_${OPENCV3_VERSION_MAJOR}_${OPENCV3_VERSION_MINOR}_${OPENCV3_VERSION_BUGFIX} -j ${COMPILE_JOBS} && \
+    catkin build -j ${COMPILE_JOBS} 
