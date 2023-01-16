@@ -15,7 +15,7 @@ set wrap                       " lines longer than the width display on the next
 set backspace=indent,eol,start " allow backspacing over everything in insert mode. 
 set ruler                      " show the line and column number of the cursor position
 set autoindent                 " copy indent from current line when starting a new line
-set showmatch                  " when a bracket is inserted, briefly jump to the matching one
+" set showmatch                  " when a bracket is inserted, briefly jump to the matching one
 set showcmd	   	               " display incomplete commands
 set number                     " display line numbers
 set relativenumber             " display relative line numbers
@@ -52,8 +52,8 @@ endif
 
 " plugin: everforest colortheme
 if filereadable(expand("$HOME/.vim/plugged/everforest/colors/everforest.vim"))
-" set background=light
-  set background=dark
+set background=light
+" set background=dark
   let g:everforest_background = 'soft' " soft, medium or hard
   if exists('g:loaded_sensible')
     let g:everforest_better_performance = 1
@@ -71,10 +71,25 @@ augroup ycm_cpp_shortcuts
     \ nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR> 
     \ | nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR> 
     \ | nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
+    \ | nnoremap <F7> :YcmCompleter Format<CR>
+    \ | nnoremap <F12> :YcmCompleter GoToReferences<CR>
 augroup END
 
 " plugin: vimtex
 let g:vimtex_view_method = 'zathura'
+let g:vimtex_compiler_latexmk_engines = {
+    \ '_'                : '-xelatex',
+    \ 'pdfdvi'           : '-pdfdvi',
+    \ 'pdfps'            : '-pdfps',
+    \ 'pdflatex'         : '-pdf',
+    \ 'luatex'           : '-lualatex',
+    \ 'lualatex'         : '-lualatex',
+    \ 'xelatex'          : '-xelatex',
+    \ 'context (pdftex)' : '-pdf -pdflatex=texexec',
+    \ 'context (luatex)' : '-pdf -pdflatex=context',
+    \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
+    \}
+let g:vimtex_compiler_method = 'latexmk'
 let g:vimtex_compiler_latexmk = {
     \ 'build_dir' : '',
     \ 'callback' : 1,
@@ -101,3 +116,16 @@ augroup vimtex_ycm
   endif
   au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
 augroup END
+
+augroup latex_shortcuts
+  au!
+  autocmd FileType tex 
+    \ inoremap \mrm \mathrm{}<Left>
+    \ | inoremap \mbf \mathbf{}<Left>
+    \ | inoremap <CTRL-m> \(\)<Left><Left>
+augroup END
+
+inoremap ( ()<Left>
+inoremap [ []<Left>
+inoremap { {}<Left>
+inoremap " ""<Left>
